@@ -7,6 +7,7 @@ int leds[8] = {11,10,9,8,7,6,5,4};
 
 // Initializing
 void setup() {
+  Serial.begin(9600);
   //initialize the 8 led pins and 1 switch
   for(int i= 0; i < (sizeof(leds)/sizeof(int)) ; i++){
     pinMode(leds[i], OUTPUT);  
@@ -17,6 +18,7 @@ void setup() {
 void loop() {
   // Switchbutton reading. The switchbutton is used as a button/toggle to power on the binary counter
   int switchState = digitalRead(switchPin);
+  Serial.println(switchState);
 
   // On switchbutton click (when LED is off) lightup LED
   if (ledLightOn == false && switchState == HIGH){
