@@ -1,57 +1,71 @@
 //  Button variables
-const int switchPin = 12;
-bool ledLightOn = false;
+const byte switchPin = 10;
+bool deviceOn = false;
 
-// global LED variable
-int leds[8] = {11,10,9,8,7,6,5,4};
+// Global LED variable
+int millisecondsPerNumber = 150;
+byte leds[8] = {9,8,7,6,5,4,3,2};
 
 // Initializing
 void setup() {
   Serial.begin(9600);
   //initialize the 8 led pins and 1 switch
-  for(int i= 0; i < (sizeof(leds)/sizeof(int)) ; i++){
+  for(byte i= 0; i < (sizeof(leds)/sizeof(byte)) ; i++){
     pinMode(leds[i], OUTPUT);  
   }
   pinMode(switchPin, INPUT);
 }
 
 void loop() {
-  // Switchbutton reading. The switchbutton is used as a button/toggle to power on the binary counter
-  int switchState = digitalRead(switchPin);
-  Serial.println(switchState);
-
-  // On switchbutton click (when LED is off) lightup LED
-  if (ledLightOn == false && switchState == HIGH){
-    ledLightOn = true;
-
+  checkDeviceState();
+  if (deviceOn == true){
     // calculate binary number and show value as long as the delay (in milliseconds)
-    for(int number = 1; number <= 255; number++){
+    for(byte number = 1; number <= 255; number++){
+      // React on pushbutton OFF when counting
+      checkDeviceState();
+      if (deviceOn == false) break;
       calculateBinaryLedValue(number);
-      delay(500);
-      ledsOff();
     }
-    
+  }
+}
+
+void checkDeviceState(){
+  // Switchbutton reading. The switchbutton is used as a button/toggle to power on the binary counter
+  byte switchState = digitalRead(switchPin);
+
+  // On switchbutton click (when LED is OFF) lightup LEDs
+  if (deviceOn == false && switchState == HIGH){
+    deviceOn = true;
+    return;
+  }
+
+  // On switchbutton click (when LED is ON) turn off LEDs
+  if (deviceOn == true && switchState == HIGH){
+    deviceOn = false;
     return;
   }
 }
 
 void ledsOff(){
-    ledLightOn = false;
-    for(int i; i < (sizeof(leds)/sizeof(int)); i++){
-      digitalWrite(leds[i], LOW);   
-    }
+  byte i = 0;
+  while(i < (sizeof(leds)/sizeof(byte))){
+    digitalWrite(leds[i], LOW);   
+    i++;
+  }
 }
 
-void calculateBinaryLedValue(int number){
+void calculateBinaryLedValue(byte number){  
   // power of 2 (2^0 <---> 2^7), values for all 8 LEDs
-  int binaryNumbers[8] = {128,64,32,16,8,4,2,1};
+  byte binaryNumbers[8] = {128,64,32,16,8,4,2,1};
 
   // determine which LED(s) to light on
-  int decimal = number;
-  int i = 0;
-  while(i < (sizeof(binaryNumbers)/sizeof(int))){
+  byte decimal = number;
+  byte i = 0;
+  while(i < (sizeof(binaryNumbers)/sizeof(byte))){
+    checkDeviceState();
+    if (deviceOn == false) break;
+      
     int result = decimal - binaryNumbers[i];
-    
     if(result >= 0){
       decimal = result;
       digitalWrite(leds[i], HIGH);
@@ -64,4 +78,7 @@ void calculateBinaryLedValue(int number){
       
     i++;  
   }
+  
+  delay(millisecondsPerNumber);
+  ledsOff();
 }
