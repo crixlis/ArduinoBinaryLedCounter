@@ -10,8 +10,8 @@
 * 1x 10k Ohm resistor
 * 8x 1k Ohm resistor
 
-<img src="https://github.com/crixlis/ArduinoBinaryLedCounter/blob/master/printboardSchema.JPG" width="100" alt="printboard schema"/>
-<img src="https://hackster.imgix.net/uploads/attachments/567995/blob_hHd4e3rFom.blob?auto=compress%2Cformat&w=400&h=300&fit=min"width="100" alt="result after soldering"/>
+<img src="https://github.com/crixlis/ArduinoBinaryLedCounter/blob/master/printboardSchema.JPG" width="250" alt="printboard schema"/>
+<img src="https://hackster.imgix.net/uploads/attachments/567995/blob_hHd4e3rFom.blob?auto=compress%2Cformat&w=400&h=300&fit=min" width="250" alt="result after soldering"/>
 
 [For more info](https://create.arduino.cc/projecthub/crixalis/8bit-led-counter-f61d11?ref=user&ref_id=571887&offset=0)
 
